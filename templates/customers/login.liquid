@@ -1,0 +1,45 @@
+<section class='account-section'>
+  <div class='container'>
+
+    <div class='account-header'>
+      <h1>Log In</h1>
+    </div>
+
+    {% form 'customer_login' %} {{ form.errors | default_errors }}
+      <label for="customer_email">Email Address</label>
+      <input type="email" name="customer[email]" />
+      <label for="customer_password">Password</label>
+      <input type="password" name="customer[password]" />
+      <input type="submit" value="Sign In" />
+    {% endform %} 
+
+    <div class='form-password-recover'>
+      <h3>Reset Your Password</h3>
+      {% form 'recover_customer_password' %} {{ form.errors | default_errors }}
+        <label for="customer_email">Email Address</label>
+        <input type="email" name="email" />
+        <input type="submit" value="Submit" />
+      {% endform %} 
+    </div>
+
+    <div class='account-footer'>
+      {% if shop.checkout.guest_login %}
+        {% form 'guest_login' %}
+          <input type="submit" value="Continue as Guest" />
+        {% endform %}
+      {% endif %}
+
+      {% if shop.customer_accounts_enabled %}
+        {% if customer  %}
+          <a href="/account">Your Account</a>
+        {% else %}
+          {% if shop.customer_accounts_optional %}
+            {{ 'Create an account' | customer_register_link }}
+          {% endif %}
+          <a href='#' id='password-reset'>Forgot Your Password?</a>
+        {% endif %}
+      {% endif %}
+    </div>
+    
+  </div>
+</section>

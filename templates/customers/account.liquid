@@ -1,0 +1,58 @@
+<section class='account-section'>
+  <div class='container'>
+  
+    <div class='account-header'>
+      <h1>Your Account</h1>
+    </div>
+
+    <div class='customer-info'>
+      <h4>Your Account Info</h4>
+      <p>{{ customer.first_name }} {{ customer.last_name }}</p>
+      <p>{{ customer.email }}</p>
+    </div>
+
+    <div class='customer-addresses'>
+      <h4>Your Addresses</h4>
+
+      {% if customer.default_address %}
+        <p>Your default address:</p>
+        <p>{{ customer.default_address.address1 }}</p>
+        {% if customer.default_address.address2 != "" %}
+          <p>{{ customer.default_address.address2 }}</p>
+        {% endif %}
+        <p>{{ customer.default_address.city}}, {% if address.province_code %}{{ customer.default_address.province_code }}, {% endif %}{{ customer.default_address.country }}</p>
+        <p>{{ customer.default_address.zip }}</p>
+        <p>{{ customer.default_address.phone }}</p>
+      {% else %}
+        <p>You don't have any saved addresses</p>
+      {% endif %}
+    </div>
+
+    <div class='customer-orders'>
+      <h4>Your Orders</h4>
+      {% paginate customer.orders by 10 %}
+      {% if customer.orders.size != 0 %}
+
+        {% for order in customer.orders %}
+          <p>order number: {{ order.name | link_to: order.customer_url }}</p>
+          <p>date created: {{ order.created_at | date: "%b %d, %y" }}</p>
+          <p>order status: {{ order.fulfillment_status_label }}</p>
+          <p>order total: {{ order.total_price | money }}</p>
+          <p>shipping address: {{ order.shipping_address }}</p>
+        {% endfor %}
+
+      {% else %}
+        <p>You haven't placed any orders yet.</p>
+      {% endif %}
+      
+      {{ paginate | default_pagination }}
+      {% endpaginate %}
+    </div>
+
+    <div class='account-footer'>
+      <a href="/account/addresses">view addresses ({{ customer.addresses_count }})</a>
+      {{ 'Log Out'  | customer_logout_link }}
+    </div>
+
+  </div>
+</section>

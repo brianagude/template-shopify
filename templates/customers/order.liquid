@@ -1,0 +1,55 @@
+<section class='account-section'>
+  <div class='container'>
+
+    <div class='account-header'>
+      <h1>Your Orders</h1>
+    </div>
+
+    {% paginate customer.orders by 20 %}
+      {% if customer.orders.size != 0 %}
+
+      {% for order in customer.orders %}
+        <h4>Your order information:</h4>
+        <p>order number: {{ order.name | link_to: order.customer_url }}</p>
+        <p>date created: {{ order.created_at | date: "%b %d, %y" }}</p>
+        <p>order status: {{ order.fulfillment_status_label }}</p>
+        <p>order total: {{ order.total_price | money }}</p>
+        <p>billing address: {{ order.billing_address }}</p>
+        <p>cancellation status: {{ order.cancelled }}</p> <!-- create an if statement -->
+        <p>shipping address: {{ order.shipping_address }}</p>
+        <p>order subtotal: {{ order.subtotal_price | money }}</p>
+
+        <h5>Order Items:</h5>
+        {% for line_item in order.line_items %}
+          <p>item price: {{ line_item.final_price }}</p>
+          <p>item quantity: {{ line_item.quantity }}</p>
+          {{ line_item.image | img_url: '100x100' | img_tag }}
+          {% unless line_item.product.has_only_default_variant %}
+            <ul>
+              {% for option in line_item.options_with_values %}
+                <li>{{ option.name }}: {{ option.value }}</li>
+              {% endfor %}
+            </ul>
+          {% endunless %}
+          
+          <p>item title: {{ line_item.title }}</p>
+        {% endfor %}
+      {% endfor %}
+
+      {% else %}
+        <p>You haven't placed any orders</p>
+      {% endif %}
+
+      {% if paginate.pages > 1 %}
+          <p>{{ paginate | default_pagination | replace: '&laquo; Previous', '&larr;' | replace: 'Next &raquo;', '&rarr;' }}
+      {% endif %}
+
+    {% endpaginate %}
+
+    <div class='account-footer'>
+      <a href="/account">Account</a>
+      {{ 'Log Out'  | customer_logout_link }}
+    </div>
+
+  </div>
+</section>

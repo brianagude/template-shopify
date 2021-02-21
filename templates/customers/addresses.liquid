@@ -1,0 +1,47 @@
+<section class='account-section'>
+  <div class='container'>
+
+    <div class='account-header'>
+      <h1>Your Addresses</h1>
+    </div>
+
+    {% for address in customer.addresses %}
+      {% form 'customer_address', address %}
+      {% endform %}
+
+      <form
+        class="address-delete-form"
+        method="post"
+        action="/account/addresses/{{ address.id }}"
+        data-confirm-message="{{ 'customer.addresses.delete_confirm' | t }}"
+      >
+        <input type="hidden" name="_method" value="delete" />
+        <button type="submit">
+          delete
+        </button>
+      </form>
+    {% endfor %} 
+
+    {% form 'customer_address', customer.new_address %}
+      <input type="text" name="address[first_name]" />
+      <input type="text" name="address[last_name]" />
+      <input type="text" name="address[company]" />
+      <input type="text" name="address[address1]" />
+      <input type="text" name="address[address2]" />
+      <input type="text" name="address[city]" />
+      <input type="select" name="address[country]" />
+      <input type="select" name="address[province]" />
+      <input type="text" name="address[zip]" />
+      <input type="tel" name="address[phone]" />
+    {% endform %}
+
+    <div class='account-footer'>
+      <a href="/account">Your Account</a>
+      {{ 'Log Out'  | customer_logout_link }}
+    </div>
+
+  </div>
+</section>
+
+
+
