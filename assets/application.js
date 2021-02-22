@@ -1,22 +1,33 @@
 $(document).ready(function() {
 
-  function deleteAddress(){
-    document.querySelectorAll('.address-delete-form').forEach(deleteForm => {
-      deleteForm.addEventListener('submit', event => {
-        const confirmMessage = event.target.getAttribute('data-confirm-message');
+  // Address delete form
+  document.querySelectorAll('.address-delete-form').forEach(deleteForm => {
+    deleteForm.addEventListener('submit', event => {
+      const confirmMessage = event.target.getAttribute('data-confirm-message');
 
-        if (
-          !window.confirm(
-            confirmMessage || 'Are you sure you wish to delete this address?'
-          )
-        ) {
-          event.preventDefault();
-        }
-      });
+      if (
+        !window.confirm(
+          confirmMessage || 'Are you sure you wish to delete this address?'
+        )
+      ) {
+        event.preventDefault();
+      }
     });
-  }
+  });
 
-  deleteAddress()
+  // password reset
+  $('.form-password-recover').hide()
+
+  $('#password-reset').click(function(){
+    $('.form-password-recover').show()
+  })
+
+  $('.pwrd-close-btn').click(function(){
+    $('.form-password-recover').hide()
+  })
+  
+
+  
 
   // Currency Global Variables
   let

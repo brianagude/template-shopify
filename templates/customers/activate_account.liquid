@@ -21,6 +21,16 @@
         </div>
       {% endform %} 
 
+      <div class='form-password-recover'>
+        <button class="pwrd-close-btn">X</button>
+        <h3>Reset Your Password</h3>
+        {% form 'recover_customer_password' %} {{ form.errors | default_errors }}
+          <label for="customer_email">Email Address</label>
+          <input type="email" name="email" />
+          <input type="submit" value="Submit" class="btn-submit" />
+        {% endform %} 
+    </div>
+
     <div class='account-footer'>
       {% if shop.checkout.guest_login %}
         {% form 'guest_login' %}
